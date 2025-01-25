@@ -25,4 +25,15 @@ public class CurrencyController {
         }
 
     }
+
+    @GetMapping("/currentBalance")
+    public ResponseEntity<String> getCurrentBalance(){
+        try{
+            Float CurrentBalance =  currencyService.GetBalance();
+            return ResponseEntity.status(200).body(CurrentBalance.toString());
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
 }
