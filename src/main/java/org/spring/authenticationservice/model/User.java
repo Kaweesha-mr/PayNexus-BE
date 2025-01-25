@@ -15,8 +15,30 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    public Float getBalance() {
+        return Balance;
+    }
+
+    public void setBalance(Float balance) {
+        Balance = balance;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
     @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
+    private Float Balance = 0.00f;
+
+    @Column(nullable = false)
+    private boolean isActive = false;
 
     @Column(nullable = false)
     private String password;
