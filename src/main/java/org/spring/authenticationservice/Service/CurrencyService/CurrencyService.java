@@ -21,19 +21,20 @@ public class CurrencyService {
     private JwtService jwtService;
 
     // Evict cache when balance is reloaded
-    //@CacheEvict(value = "userBalance", key = "#reloadDto.getUserID()")
-    public Float ReloadUser(ReloadDto reloadDto) {
+    @CacheEvict(value = "userBalance", key = "#reloadDto.getUserID()")
+    public String ReloadUser(ReloadDto reloadDto) {
         User user = userRepository.findByEmail(reloadDto.getUserID()).orElseThrow(() -> new RuntimeException("User not found!"));
         float newBalance = user.getBalance() + reloadDto.getCurrency();
         user.setBalance(newBalance);
         userRepository.save(user);
-        return newBalance;
+        return String.valueOf(newBalance);
     }
 
     // Get balance with caching
-    //@Cacheable(value = "userBalance", key = "#reloadDto.getUserID()")
-    public Float GetBalance() {
+    @Cacheable(value = "userBalance", keyGenerator = "usernameKeyGenerator")
+    public String GetBalance() {
+        System.out.println("Fetching balance from the database...");
         User user = userRepository.findByEmail(getUsername()).orElseThrow(() -> new RuntimeException("User not found!"));
-        return user.getBalance();
+        return user.getBalance().toString();
     }
 }

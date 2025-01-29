@@ -17,8 +17,8 @@ public class CurrencyController {
     @PostMapping("/reload")
     public ResponseEntity<String> reload(@RequestBody ReloadDto reloadDto){
         try{
-            Float CurrentBalance =  currencyService.ReloadUser(reloadDto);
-            return ResponseEntity.status(200).body(CurrentBalance.toString());
+            String CurrentBalance =  currencyService.ReloadUser(reloadDto);
+            return ResponseEntity.status(200).body(CurrentBalance);
         }
         catch (Exception e){
             return ResponseEntity.status(500).body(e.getMessage());
@@ -29,7 +29,7 @@ public class CurrencyController {
     @GetMapping("/currentBalance")
     public ResponseEntity<String> getCurrentBalance(){
         try{
-            Float CurrentBalance =  currencyService.GetBalance();
+            String CurrentBalance =  currencyService.GetBalance();
             return ResponseEntity.status(200).body(CurrentBalance.toString());
         }
         catch (Exception e){
