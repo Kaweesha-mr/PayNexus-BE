@@ -54,6 +54,28 @@ public class User {
     )
     private List<Role> roles = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "members")
+    private List<Group> groups = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<UserGroupRole> userGroupRoles;
+
+    public List<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
+    }
+
+    public List<UserGroupRole> getUserGroupRoles() {
+        return userGroupRoles;
+    }
+
+    public void setUserGroupRoles(List<UserGroupRole> userGroupRoles) {
+        this.userGroupRoles = userGroupRoles;
+    }
+
     public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
