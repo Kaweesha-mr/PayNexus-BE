@@ -2,6 +2,7 @@ package org.spring.authenticationservice.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,6 +18,31 @@ public class Group {
 
     @Column(nullable = false)
     private Float contributionAmount;
+
+    @Column(nullable = false)
+    private Integer memberLimit = 0;
+
+    @Column(nullable = false)
+    private Long adminId; // Linking to the admin (User)
+
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
+    private List<UserGroupRole> userGroupRoles;
+
+    @Column(nullable = false)
+    private Integer currentCycle = 0;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_groups",
+            joinColumns = @JoinColumn(name = "group_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> members = new ArrayList<>(); // ✅ Initialize the list
+
+    // ✅ Constructor to ensure list is always initialized
+    public Group() {
+        this.members = new ArrayList<>();
+    }
 
     public Long getId() {
         return id;
@@ -35,7 +61,7 @@ public class Group {
     }
 
     public Float getContributionAmount() {
-        return contributionAmount;
+        return this.contributionAmount;
     }
 
     public void setContributionAmount(Float contributionAmount) {
@@ -74,16 +100,11 @@ public class Group {
         this.currentCycle = currentCycle;
     }
 
-    @Column(nullable = false)
-    private Integer memberLimit;
+    public List<User> getMembers() {
+        return members;
+    }
 
-    @Column(nullable = false)
-    private Long adminId; // Linking to the admin (User)
-
-    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
-    private List<UserGroupRole> userGroupRoles;
-
-    @Column(nullable = false)
-    private Integer currentCycle;
-
+    public void setMembers(List<User> members) {
+        this.members = members;
+    }
 }
