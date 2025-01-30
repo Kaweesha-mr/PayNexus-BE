@@ -1,11 +1,8 @@
 package org.spring.authenticationservice.model;
 
 import jakarta.persistence.*;
-import lombok.Setter;
-
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Entity
 @Table(name = "users")
@@ -15,27 +12,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public Float getBalance() {
-        return Balance;
-    }
-
-    public void setBalance(Float balance) {
-        Balance = balance;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
-
     @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
-    private Float Balance = 0.00f;
+    private Float balance = 0.00f;
 
     @Column(nullable = false)
     private boolean isActive = false;
@@ -55,10 +36,73 @@ public class User {
     private List<Role> roles = new ArrayList<>();
 
     @ManyToMany(mappedBy = "members")
-    private List<Group> groups = new ArrayList<>();
+    private List<Group> groups = new ArrayList<>(); // ✅ Initialize the list
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<UserGroupRole> userGroupRoles;
+    private List<UserGroupRole> userGroupRoles = new ArrayList<>();
+
+    // ✅ Constructor to ensure lists are always initialized
+    public User() {
+        this.roles = new ArrayList<>();
+        this.groups = new ArrayList<>();
+        this.userGroupRoles = new ArrayList<>();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Float getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Float balance) {
+        this.balance = balance;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password){
+        this.password = password;
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
 
     public List<Group> getGroups() {
         return groups;
@@ -75,57 +119,4 @@ public class User {
     public void setUserGroupRoles(List<UserGroupRole> userGroupRoles) {
         this.userGroupRoles = userGroupRoles;
     }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
-
-    public boolean isEnabled() {
-        return isEnabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        isEnabled = enabled;
-    }
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    // Default constructor
-    public User() {
-
-    }
-
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public boolean getIsEnabled() {
-        return isEnabled;
-    }
-
-
-    public void setPassword(String password){
-        this.password = password;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-
-
 }
