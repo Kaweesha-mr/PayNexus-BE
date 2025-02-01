@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import static org.spring.authenticationservice.Utils.SecurityUtils.getUsername;
 
-public class GroupDto {
+public class CreateGroupDto {
 
     @JsonProperty("name")
     private String GrpName;

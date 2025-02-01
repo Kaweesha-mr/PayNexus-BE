@@ -1,6 +1,8 @@
 package org.spring.authenticationservice.Service.GroupService;
 
-import org.spring.authenticationservice.DTO.Group.GroupDto;
+import org.spring.authenticationservice.DTO.Group.CreateGroupDto;
+import org.spring.authenticationservice.DTO.Group.RespGroupDto;
+import org.spring.authenticationservice.DTO.Members.GrpMember;
 import org.spring.authenticationservice.model.Group;
 import org.spring.authenticationservice.model.User;
 import org.spring.authenticationservice.model.UserGroupRole;
@@ -9,8 +11,6 @@ import org.spring.authenticationservice.repository.UserGroupRoleRepository;
 import org.spring.authenticationservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 import static org.spring.authenticationservice.Utils.SecurityUtils.getUsername;
 
@@ -26,7 +26,7 @@ public class GroupService {
     @Autowired
     private UserGroupRoleRepository userGroupRoleRepository;
 
-    public Group createGroup(GroupDto groupDto) {
+    public Group createGroup(CreateGroupDto groupDto) {
 
         // Fetch the user who is creating the group
         User adminUser = userRepository.findByEmail(getUsername())
@@ -52,4 +52,20 @@ public class GroupService {
         return savedGroup;
 
     }
+
+
+//    public RespGroupDto findGroupById(Long groupId) {
+//        Group group = groupRepository.findById(groupId).orElseThrow(() -> new RuntimeException("Group not found"));
+//        RespGroupDto respGroupDto = new RespGroupDto();
+//
+//        respGroupDto.setId(group.getId());
+//        respGroupDto.setName(group.getGrpName());
+//        respGroupDto.setContributionAmount(group.getContributionAmount());
+//        respGroupDto.setCurrentCycle(group.getCurrentCycle());
+//        respGroupDto.setAdminName(group.getAdminId());
+//        respGroupDto.setMemberCount(group.getMemberLimit());
+//        respGroupDto.setMembers(group.getMembers());
+//
+//        return respGroupDto;
+//    }
 }
