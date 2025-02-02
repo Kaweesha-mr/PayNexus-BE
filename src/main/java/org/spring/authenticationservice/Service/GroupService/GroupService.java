@@ -12,6 +12,9 @@ import org.spring.authenticationservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.spring.authenticationservice.Utils.SecurityUtils.getUsername;
 
 @Service
@@ -85,6 +88,11 @@ public class GroupService {
 
         if(isApproved){
             invitation.setStatus(UserGroupRole.InvitationStatus.APPROVED);
+
+            Group group = invitation.getGroup();
+            User user = invitation.getUser();
+            group.getMembers().add(user);
+            groupRepository.save(group);
         }
         else{
             invitation.setStatus(UserGroupRole.InvitationStatus.REJECTED);
@@ -92,6 +100,16 @@ public class GroupService {
 
         userGroupRoleRepository.save(invitation);
         return isApproved ? "You have joined the group" : "Rejected";
+    }
+
+    public List<GrpMember> getMembers(Long groupId) {
+        Group group = groupRepository.findById(groupId).orElseThrow(() -> new RuntimeException("Group not found"));
+
+        List<UserGroupRole> approvedMembers = userGroupRoleRepository.findByGroupAndStatus(group, UserGroupRole.InvitationStatus.APPROVED);
+
+        return approvedMembers.stream()
+                .map(userGroupRole -> new GrpMember(userGroupRole.getUser().getEmail(),userGroupRole.getUser().getId(),userGroupRole.getRole()))
+                .collect(Collectors.toList());
     }
 
 
