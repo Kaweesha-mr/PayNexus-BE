@@ -6,6 +6,7 @@ import org.spring.authenticationservice.Service.GroupService.GroupService;
 import org.spring.authenticationservice.model.Group;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,6 +29,17 @@ public class GroupController {
 
         }
 
+    }
+
+    @PostMapping("/{groupId}/invite/{userId}")
+    public ResponseEntity<String> inviteUser(@PathVariable Long groupId, @PathVariable Long userId){
+        try{
+            String message = groupService.inviteUserToGroup(groupId,userId);
+            return ResponseEntity.status(200).body(message);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
     }
 
 //    @GetMapping("/group/${id}")

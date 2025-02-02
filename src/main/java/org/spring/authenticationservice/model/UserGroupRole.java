@@ -20,6 +20,21 @@ public class UserGroupRole {
     @Column(nullable = false)
     private String role;
 
+    @Enumerated(EnumType.STRING)
+    private InvitationStatus status = null;
+
+    public enum InvitationStatus {
+        PENDING, APPROVED, REJECTED
+    }
+
+    public InvitationStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(InvitationStatus status) {
+        this.status = status;
+    }
+
     public Long getId() {
         return id;
     }

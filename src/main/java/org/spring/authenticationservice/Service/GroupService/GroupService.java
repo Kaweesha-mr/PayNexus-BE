@@ -53,6 +53,26 @@ public class GroupService {
 
     }
 
+    public String inviteUserToGroup(Long groupId, Long userId) {
+        User newUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        Group group = groupRepository.findById(groupId).orElseThrow(() -> new RuntimeException("Group not found"));
+
+        //admin validation should be added
+
+        if(userGroupRoleRepository.existsByUserAndGroup(newUser, group)) {
+            throw new RuntimeException("User already has group " + group.getGrpName());
+        }
+
+        UserGroupRole invitation = new UserGroupRole();
+        invitation.setGroup(group);
+        invitation.setUser(newUser);
+        invitation.setRole("ROLE_MEMBER");
+        invitation.setStatus(UserGroupRole.InvitationStatus.PENDING);
+        userGroupRoleRepository.save(invitation);
+
+        return "Invitation sent to User " + newUser.getEmail();
+    }
+
 
 //    public RespGroupDto findGroupById(Long groupId) {
 //        Group group = groupRepository.findById(groupId).orElseThrow(() -> new RuntimeException("Group not found"));
