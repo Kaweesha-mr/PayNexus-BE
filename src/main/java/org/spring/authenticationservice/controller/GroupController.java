@@ -2,12 +2,15 @@ package org.spring.authenticationservice.controller;
 
 import org.spring.authenticationservice.DTO.Group.CreateGroupDto;
 import org.spring.authenticationservice.DTO.Group.RespGroupDto;
+import org.spring.authenticationservice.DTO.Members.GrpMember;
 import org.spring.authenticationservice.Service.GroupService.GroupService;
 import org.spring.authenticationservice.model.Group;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/grp")
@@ -53,6 +56,21 @@ public class GroupController {
         catch (Exception e){
             return ResponseEntity.status(500).body(e.getMessage());
         }
+    }
+
+    @GetMapping("/{groupId}/members")
+    public ResponseEntity<?> getMembers(@PathVariable Long groupId){
+        try{
+            //validate only admin or member of thus group can access this endpoint has to be added
+
+            List<GrpMember> grpMembers = groupService.getMembers(groupId);
+            return ResponseEntity.ok(grpMembers);
+
+        }catch (Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+
+
     }
 
 //    @GetMapping("/group/${id}")
