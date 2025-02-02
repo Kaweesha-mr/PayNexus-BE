@@ -75,6 +75,25 @@ public class GroupService {
         return "Invitation sent to User " + newUser.getEmail();
     }
 
+    public String respondToInvitation(Long userId, Long groupId, boolean isApproved) {
+
+        //should be updated to decode JWT and get the details
+
+        UserGroupRole invitation = userGroupRoleRepository
+                .findByUserIdAndGroupIdAndStatus(userId,groupId,UserGroupRole.InvitationStatus.PENDING)
+                .orElseThrow(()-> new RuntimeException("Invitation not found"));
+
+        if(isApproved){
+            invitation.setStatus(UserGroupRole.InvitationStatus.APPROVED);
+        }
+        else{
+            invitation.setStatus(UserGroupRole.InvitationStatus.REJECTED);
+        }
+
+        userGroupRoleRepository.save(invitation);
+        return isApproved ? "You have joined the group" : "Rejected";
+    }
+
 
 //    public RespGroupDto findGroupById(Long groupId) {
 //        Group group = groupRepository.findById(groupId).orElseThrow(() -> new RuntimeException("Group not found"));

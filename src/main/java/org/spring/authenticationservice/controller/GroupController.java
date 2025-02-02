@@ -42,6 +42,19 @@ public class GroupController {
         }
     }
 
+    @GetMapping("/{groupId}/respond")
+    public ResponseEntity<String> respondToGroup(@PathVariable Long groupId,@RequestParam Long userId, @RequestParam Boolean approve){
+        try{
+
+            String message = groupService.respondToInvitation(userId,groupId,approve);
+            return ResponseEntity.ok(message);
+
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
 //    @GetMapping("/group/${id}")
 //    public ResponseEntity<RespGroupDto> getGroup(@PathVariable Long id){
 //        try{
