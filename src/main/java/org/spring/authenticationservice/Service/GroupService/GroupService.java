@@ -70,6 +70,8 @@ public class GroupService {
         invitation.setStatus(UserGroupRole.InvitationStatus.PENDING);
         userGroupRoleRepository.save(invitation);
 
+        //email should be sent to user with JWT
+
         return "Invitation sent to User " + newUser.getEmail();
     }
 
