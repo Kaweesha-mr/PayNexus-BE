@@ -31,7 +31,7 @@ public class Group {
     @Column(nullable = false)
     private Integer currentCycle = 0;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_groups",
             joinColumns = @JoinColumn(name = "group_id"),
@@ -39,10 +39,7 @@ public class Group {
     )
     private List<User> members = new ArrayList<>(); // ✅ Initialize the list
 
-    // ✅ Constructor to ensure list is always initialized
-    public Group() {
-        this.members = new ArrayList<>();
-    }
+
 
     public Long getId() {
         return id;

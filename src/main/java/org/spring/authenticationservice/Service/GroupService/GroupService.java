@@ -3,6 +3,7 @@ package org.spring.authenticationservice.Service.GroupService;
 import org.spring.authenticationservice.DTO.Group.CreateGroupDto;
 import org.spring.authenticationservice.DTO.Group.RespGroupDto;
 import org.spring.authenticationservice.DTO.Members.GrpMember;
+import org.spring.authenticationservice.DTO.Members.GrpMemberResp;
 import org.spring.authenticationservice.model.Group;
 import org.spring.authenticationservice.model.User;
 import org.spring.authenticationservice.model.UserGroupRole;
@@ -113,18 +114,21 @@ public class GroupService {
     }
 
 
-//    public RespGroupDto findGroupById(Long groupId) {
-//        Group group = groupRepository.findById(groupId).orElseThrow(() -> new RuntimeException("Group not found"));
-//        RespGroupDto respGroupDto = new RespGroupDto();
-//
-//        respGroupDto.setId(group.getId());
-//        respGroupDto.setName(group.getGrpName());
-//        respGroupDto.setContributionAmount(group.getContributionAmount());
-//        respGroupDto.setCurrentCycle(group.getCurrentCycle());
-//        respGroupDto.setAdminName(group.getAdminId());
-//        respGroupDto.setMemberCount(group.getMemberLimit());
-//        respGroupDto.setMembers(group.getMembers());
-//
-//        return respGroupDto;
-//    }
+    public RespGroupDto findGroupById(Long groupId) {
+        Group group = groupRepository.findById(groupId).orElseThrow(() -> new RuntimeException("Group not found"));
+        RespGroupDto respGroupDto = new RespGroupDto();
+
+        respGroupDto.setId(group.getId());
+        respGroupDto.setName(group.getGrpName());
+        respGroupDto.setContributionAmount(group.getContributionAmount());
+        respGroupDto.setCurrentCycle(group.getCurrentCycle());
+        respGroupDto.setAdminName(group.getAdminId());
+        respGroupDto.setMemberCount(group.getMemberLimit());
+
+        List<GrpMemberResp> grpMembers = group.getMembers().stream()
+                .map(user -> new GrpMemberResp(user.getEmail(),user.getId(),user.getRoles())).toList();
+
+        respGroupDto.setMembers(grpMembers);
+        return respGroupDto;
+    }
 }

@@ -73,19 +73,19 @@ public class GroupController {
 
     }
 
-//    @GetMapping("/group/${id}")
-//    public ResponseEntity<RespGroupDto> getGroup(@PathVariable Long id){
-//        try{
-//
-//            RespGroupDto respGroupDto = groupService.findGroupById(id);
-//            return  ResponseEntity.status(200).body(
-//                    respGroupDto
-//            );
-//        }
-//        catch (Exception e){
-//            return ResponseEntity
-//        }
-//    }
+    @GetMapping("/group/{id}")
+    public ResponseEntity<?> getGroup(@PathVariable Long id){
+        try{
+
+            RespGroupDto respGroupDto = groupService.findGroupById(id);
+            return  ResponseEntity.status(200).body(
+                    respGroupDto
+            );
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
 
 
 

@@ -1,6 +1,7 @@
 package org.spring.authenticationservice.DTO.Group;
 
 import org.spring.authenticationservice.DTO.Members.GrpMember;
+import org.spring.authenticationservice.DTO.Members.GrpMemberResp;
 import org.spring.authenticationservice.model.User;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public class RespGroupDto {
     private Float ContributionAmount;
     private Integer memberCount;
     private Long adminName;
-    private List<User> members;
+    private List<GrpMemberResp> members;
     private Integer CurrentCycle;
 
     public Integer getCurrentCycle() {
@@ -22,11 +23,11 @@ public class RespGroupDto {
         CurrentCycle = currentCycle;
     }
 
-    public List<User> getMembers() {
+    public List<GrpMemberResp> getMembers() {
         return members;
     }
 
-    public void setMembers(List<User> members) {
+    public void setMembers(List<GrpMemberResp> members) {
         this.members = members;
     }
 
